@@ -5,7 +5,13 @@ var Medico=require('../models/medico');
 var autenticacion=require('../middlewares/autenticacion');
 
 app.get('/',(req,res)=>{
+
+    var desde=req.query.desde;
+    desde=Number(desde);
+
     Medico.find({},'nombre img usuario hospital')
+    .skip(desde)
+    .limit(5)
     .populate('usuario','nombre email')
     .populate('hospital')
     .exec(
@@ -17,9 +23,19 @@ app.get('/',(req,res)=>{
                     error:err
                 });
             }
-            res.status(200).json({
-                ok:true,
-                medicos:medicos
+            Medico.count({},(err,total)=>{
+                if(err){
+                    return res.status(500).json({
+                        ok:false,
+                        message:'Error interno del servidor',
+                        error:err
+                    });
+                }
+                res.status(200).json({
+                    ok:true,
+                    medicos:medicos,
+                    total:total
+                });
             });
         });
 });
