@@ -17,6 +17,8 @@ var usuarioRoutes=require('./routes/usuario');
 var medicoRoutes=require('./routes/medico');
 var hospitalRoutes=require('./routes/hospital');
 var busquedaRoutes=require('./routes/busqueda');
+var uploadRoutes=require('./routes/upload');
+var imagenesRoutes=require('./routes/imagenes');
 
 //Conexion a bd
 mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB',(err,res)=>{
@@ -31,7 +33,9 @@ app.use('/usuario',usuarioRoutes);
 app.use('/hospital',hospitalRoutes);
 app.use('/medico',medicoRoutes);
 app.use('/login',loginRoutes);
+app.use('/upload',uploadRoutes);
 app.use('/busqueda',busquedaRoutes);
+app.use('/img',imagenesRoutes);
 app.use('/',appRoutes);
 
 //Escuchar peticiones
